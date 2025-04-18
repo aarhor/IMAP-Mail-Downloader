@@ -14,9 +14,12 @@ folders_to_exclude = [""]
 imap_server = config["imap"]["imap_server"]
 imap_username = config["imap"]["imap_username"]
 imap_password = config["imap"]["imap_password"]
+imap_port = config["imap"]["imap_port"]
 list_Only_Folders = False
 
-with MailBox(imap_server).login(imap_username, imap_password) as MailBox:
+with MailBox(imap_server, port=imap_port).login(
+    imap_username, imap_password
+) as MailBox:
     for g in MailBox.folder.list():
         Foldername = g.name
 
@@ -61,4 +64,3 @@ with MailBox(imap_server).login(imap_username, imap_password) as MailBox:
                         with open(FilePath, "w", encoding="utf-8") as g:
                             with redirect_stdout(g):
                                 print(raw_email)
-

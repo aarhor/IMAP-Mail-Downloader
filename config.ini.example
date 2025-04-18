@@ -2,3 +2,4 @@
 imap_server=
 imap_username=
 imap_password=
+imap_port=993
