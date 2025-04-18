@@ -10,6 +10,7 @@ Just copy / move the file `config.ini.example` to `config.ini` and fill in the n
   * Proton: Needs the bridge
 * `imap_username` is the mailaddress or the username (r_selfhosted@example.com)
 * `imap_password` can be a normal Password or an App Token.
+* `imap_port` Default Port value `993`
 
 ### First run
 You need the `imap-tools` python Module (`pip install imap-tools`).
@@ -34,5 +35,4 @@ INBOX
 To exclude a folder from the Backup you just need to set the full folderpath in the `folders_to_exclude` list.
 
 ## ToDo
-* zip the Folder with Datestamp (`YYYYMMDD`)
 * Foldername exclude not Fullpathname exclude

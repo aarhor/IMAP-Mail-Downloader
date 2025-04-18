@@ -64,3 +64,17 @@ with MailBox(imap_server, port=imap_port).login(
                         with open(FilePath, "w", encoding="utf-8") as g:
                             with redirect_stdout(g):
                                 print(raw_email)
+
+
+def zipfolder(foldername, target_dir):
+    zipobj = zipfile.ZipFile(f"{foldername}.zip", "w", zipfile.ZIP_DEFLATED)
+    rootlen = len(target_dir) + 1
+    for base, dirs, files in os.walk(target_dir):
+        for file in files:
+            fn = os.path.join(base, file)
+            zipobj.write(fn, fn[rootlen:])
+
+
+date = datetime.datetime.now().strftime("%Y%m%d")
+
+zipfolder(f"{imap_server}_{date}", imap_server)  # insert your variables here
