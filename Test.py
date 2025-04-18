@@ -1,11 +1,19 @@
 from imap_tools import MailBox
 from contextlib import redirect_stdout
 import os
+import configparser
+
+Path_config = "config.ini"
+config = configparser.ConfigParser()
+config.sections()
+config.read(Path_config)
+config.sections()
+"imap" in config
 
 folders_to_exclude = [""]
-imap_server = ""
-imap_username = ""
-imap_password = ""  # Normal Password or an App-Token
+imap_server = config["imap"]["imap_server"]
+imap_username = config["imap"]["imap_username"]
+imap_password = config["imap"]["imap_password"]
 list_Only_Folders = False
 
 with MailBox(imap_server).login(imap_username, imap_password) as MailBox:
@@ -53,3 +61,4 @@ with MailBox(imap_server).login(imap_username, imap_password) as MailBox:
                         with open(FilePath, "w", encoding="utf-8") as g:
                             with redirect_stdout(g):
                                 print(raw_email)
+
