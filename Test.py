@@ -1,7 +1,11 @@
 from imap_tools import MailBox
+import datetime
 from contextlib import redirect_stdout
 import os
 import configparser
+import zipfile
+import os
+
 
 Path_config = "config.ini"
 config = configparser.ConfigParser()
@@ -16,6 +20,7 @@ imap_username = config["imap"]["imap_username"]
 imap_password = config["imap"]["imap_password"]
 imap_port = config["imap"]["imap_port"]
 list_Only_Folders = False
+date = datetime.datetime.now().strftime("%Y%m%d")
 
 with MailBox(imap_server, port=imap_port).login(
     imap_username, imap_password
@@ -25,9 +30,14 @@ with MailBox(imap_server, port=imap_port).login(
 
         if Foldername not in folders_to_exclude:
             print(Foldername)
+
             if not list_Only_Folders:
                 if not os.path.exists(f"{imap_server}/{Foldername}"):
                     os.makedirs(f"{imap_server}/{Foldername}")
+                    
+                with open(f"{imap_server}/Structure.txt", "a", encoding="utf-8") as g:
+                    with redirect_stdout(g):
+                        print(Foldername)
 
                 MailBox.folder.set(Foldername)
                 for msg in MailBox.fetch(mark_seen=False):
@@ -73,8 +83,5 @@ def zipfolder(foldername, target_dir):
         for file in files:
             fn = os.path.join(base, file)
             zipobj.write(fn, fn[rootlen:])
-
-
-date = datetime.datetime.now().strftime("%Y%m%d")
 
 zipfolder(f"{imap_server}_{date}", imap_server)  # insert your variables here
