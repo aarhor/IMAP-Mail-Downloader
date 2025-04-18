@@ -32,10 +32,10 @@ with MailBox(imap_server, port=imap_port).login(
             print(Foldername)
 
             if not list_Only_Folders:
-                if not os.path.exists(f"{imap_server}/{Foldername}"):
-                    os.makedirs(f"{imap_server}/{Foldername}")
+                if not os.path.exists(f"export/{imap_server}/{Foldername}"):
+                    os.makedirs(f"export/{imap_server}/{Foldername}")
                     
-                with open(f"{imap_server}/Structure.txt", "a", encoding="utf-8") as g:
+                with open(f"export/{imap_server}/Structure.txt", "a", encoding="utf-8") as g:
                     with redirect_stdout(g):
                         print(Foldername)
 
@@ -66,7 +66,7 @@ with MailBox(imap_server, port=imap_port).login(
                     for char in invalid_char:
                         Mail_Subject = Mail_Subject.replace(char, "_")
 
-                    FilePath = f"{imap_server}/{Foldername}/{uid}_{Mail_Subject}.eml"
+                    FilePath = f"export/{imap_server}/{Foldername}/{uid}_{Mail_Subject}.eml"
 
                     if not os.path.exists(FilePath):
                         raw_email = msg.obj
@@ -84,4 +84,4 @@ def zipfolder(foldername, target_dir):
             fn = os.path.join(base, file)
             zipobj.write(fn, fn[rootlen:])
 
-zipfolder(f"{imap_server}_{date}", imap_server)  # insert your variables here
+zipfolder(f"{imap_server}_{date}", f"export/{imap_server}")  # insert your variables here
