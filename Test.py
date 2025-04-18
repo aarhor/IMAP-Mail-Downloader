@@ -11,7 +11,7 @@ list_Only_Folders = False
 with MailBox(imap_server).login(imap_username, imap_password) as MailBox:
     for g in MailBox.folder.list():
         Foldername = g.name
-        
+
         if Foldername not in folders_to_exclude:
             print(Foldername)
             if not list_Only_Folders:
@@ -40,13 +40,13 @@ with MailBox(imap_server).login(imap_username, imap_password) as MailBox:
                         "\r",
                         "\n",
                     ]
-                    
+
                     Mail_Subject = msg.subject
                     for char in invalid_char:
                         Mail_Subject = Mail_Subject.replace(char, "_")
 
                     FilePath = f"{imap_server}/{Foldername}/{uid}_{Mail_Subject}.eml"
-                    
+
                     if not os.path.exists(FilePath):
                         raw_email = msg.obj
                         print(FilePath)
