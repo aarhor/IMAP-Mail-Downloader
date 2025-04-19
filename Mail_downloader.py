@@ -22,7 +22,7 @@ date = datetime.datetime.now().strftime("%Y%m%d")
 MailBox_folder_list = ""
 ZIP_export_folder = "export"
 
-with MailBox(imap_server, port=imap_port).login(
+with MailBox(imap_server, port=imap_port).login_utf8(
     imap_username, imap_password
 ) as MailBox:
     for g in MailBox.folder.list(MailBox_folder_list):
