@@ -20,7 +20,7 @@ imap_port = config["imap"]["imap_port"]
 list_Only_Folders = False
 date = datetime.datetime.now().strftime("%Y%m%d")
 MailBox_folder_list = ""
-ZIP_export_folder = f"export"
+ZIP_export_folder = "export"
 
 with MailBox(imap_server, port=imap_port).login(
     imap_username, imap_password
