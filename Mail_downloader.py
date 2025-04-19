@@ -4,6 +4,7 @@ from contextlib import redirect_stdout
 import os
 import configparser
 import zipfile
+import shutil
 
 Path_config = "config.ini"
 config = configparser.ConfigParser()
@@ -96,3 +97,4 @@ def zipfolder(foldername, target_dir):
 
 
 zipfolder(f"{imap_server}_{date}", f"export/{imap_server}")
+shutil.rmtree(f"export/{imap_server}")
