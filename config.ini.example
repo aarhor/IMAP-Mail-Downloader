@@ -1,5 +1,6 @@
-[imap]
+[config]
 imap_server=
 imap_username=
 imap_password=
 imap_port=993
+zip_export_folder=export

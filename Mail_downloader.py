@@ -10,17 +10,17 @@ config = configparser.ConfigParser()
 config.sections()
 config.read(Path_config)
 config.sections()
-"imap" in config
+"config" in config
 
 folders_to_exclude = [""]
-imap_server = config["imap"]["imap_server"]
-imap_username = config["imap"]["imap_username"]
-imap_password = config["imap"]["imap_password"]
-imap_port = config["imap"]["imap_port"]
+imap_server = config["config"]["imap_server"]
+imap_username = config["config"]["imap_username"]
+imap_password = config["config"]["imap_password"]
+imap_port = config["config"]["imap_port"]
 list_Only_Folders = False
 date = datetime.datetime.now().strftime("%Y%m%d")
 MailBox_folder_list = ""
-ZIP_export_folder = "export"
+ZIP_export_folder = config["config"]["zip_export_folder"]
 
 with MailBox(imap_server, port=imap_port).login_utf8(
     imap_username, imap_password
@@ -69,9 +69,7 @@ with MailBox(imap_server, port=imap_port).login_utf8(
                         for char in invalid_char:
                             Mail_Subject = Mail_Subject.replace(char, "_")
 
-                        FilePath = (
-                            f"export/{imap_server}/{Foldername}/{uid}_{Mail_Subject}.eml"
-                        )
+                        FilePath = f"export/{imap_server}/{Foldername}/{uid}_{Mail_Subject}.eml"
 
                         if not os.path.exists(FilePath):
                             raw_email = msg.obj
@@ -80,7 +78,9 @@ with MailBox(imap_server, port=imap_port).login_utf8(
                                 with redirect_stdout(g):
                                     print(raw_email)
                 except Exception as error:
-                    print(f"An exception occurred:\n{error}\n\nGoing to the next Iteration.")
+                    print(
+                        f"An exception occurred:\n{error}\n\nGoing to the next Iteration."
+                    )
                     continue
 
 
