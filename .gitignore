@@ -1,4 +1,2 @@
 config.ini
-export/*
-!export/.placeholder
-*.zip
+export
