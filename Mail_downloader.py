@@ -32,52 +32,56 @@ with MailBox(imap_server, port=imap_port).login(
             print(Foldername)
 
             if not list_Only_Folders:
-                if not os.path.exists(f"export/{imap_server}/{Foldername}"):
-                    os.makedirs(f"export/{imap_server}/{Foldername}")
+                try:
+                    if not os.path.exists(f"export/{imap_server}/{Foldername}"):
+                        os.makedirs(f"export/{imap_server}/{Foldername}")
 
-                with open(
-                    f"export/{imap_server}/Structure.txt", "a", encoding="utf-8"
-                ) as g:
-                    with redirect_stdout(g):
-                        print(Foldername)
+                    with open(
+                        f"export/{imap_server}/Structure.txt", "a", encoding="utf-8"
+                    ) as g:
+                        with redirect_stdout(g):
+                            print(Foldername)
 
-                MailBox.folder.set(Foldername)
-                for msg in MailBox.fetch(mark_seen=False):
-                    uid = msg.uid
-                    invalid_char = [
-                        ":",
-                        "“",
-                        "\r\n",
-                        "„",
-                        '"',
-                        "!",
-                        "?",
-                        "/",
-                        "\\",
-                        "*",
-                        "<",
-                        ">",
-                        "|",
-                        "ß",
-                        "\t",
-                        "\r",
-                        "\n",
-                    ]
+                    MailBox.folder.set(Foldername)
+                    for msg in MailBox.fetch(mark_seen=False):
+                        uid = msg.uid
+                        invalid_char = [
+                            ":",
+                            "“",
+                            "\r\n",
+                            "„",
+                            '"',
+                            "!",
+                            "?",
+                            "/",
+                            "\\",
+                            "*",
+                            "<",
+                            ">",
+                            "|",
+                            "ß",
+                            "\t",
+                            "\r",
+                            "\n",
+                        ]
 
-                    Mail_Subject = msg.subject
-                    for char in invalid_char:
-                        Mail_Subject = Mail_Subject.replace(char, "_")
+                        Mail_Subject = msg.subject
+                        for char in invalid_char:
+                            Mail_Subject = Mail_Subject.replace(char, "_")
 
-                    FilePath = (
-                        f"export/{imap_server}/{Foldername}/{uid}_{Mail_Subject}.eml"
-                    )
+                        FilePath = (
+                            f"export/{imap_server}/{Foldername}/{uid}_{Mail_Subject}.eml"
+                        )
 
-                    if not os.path.exists(FilePath):
-                        raw_email = msg.obj
-                        print(FilePath)
-                        with open(FilePath, "w", encoding="utf-8") as g:
-                            with redirect_stdout(g):
-                                print(raw_email)
+                        if not os.path.exists(FilePath):
+                            raw_email = msg.obj
+                            print(FilePath)
+                            with open(FilePath, "w", encoding="utf-8") as g:
+                                with redirect_stdout(g):
+                                    print(raw_email)
+                except Exception as error:
+                    print(f"An exception occurred:\n{error}\n\nGoing to the next Iteration.")
+                    continue
 
 
 def zipfolder(foldername, target_dir):
