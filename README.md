@@ -35,4 +35,4 @@ To exclude a folder from the Backup you just need to set the full folderpath in 
 
 If you just want to Download a specific Folder and Subfolder, set `MailBox_folder_list` to the Foldername. For example: `MailBox_folder_list = "INBOX/Selfhosted"`.
 
-To set a another export folder for the zip File than the default `export`, just Update `ZIP_export_folder`.
+To set an another export folder for the zip File than the default `export`, just Update `ZIP_export_folder`.
