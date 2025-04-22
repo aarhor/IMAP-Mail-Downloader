@@ -103,7 +103,7 @@ with MailBox(imap_server, port=imap_port).login_utf8(
 zipfolder(f"{imap_server}_{date}", f"export/{imap_server}")
 shutil.rmtree(f"export/{imap_server}")
 
-if days_to_delete == 0:
+if days_to_delete > 0:
     for filename in os.listdir(ZIP_export_folder):
         filepath = os.path.join(ZIP_export_folder, filename)
 
