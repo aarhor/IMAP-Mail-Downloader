@@ -21,7 +21,18 @@ imap_port = config["config"]["imap_port"]
 list_Only_Folders = False
 date = datetime.datetime.now().strftime("%Y%m%d")
 MailBox_folder_list = ""
-ZIP_export_folder = config["config"]["zip_export_folder"]
+now = time.time()
+
+def zipfolder(foldername, target_dir):
+    zipobj = zipfile.ZipFile(
+        f"{ZIP_export_folder}/{foldername}.zip", "w", zipfile.ZIP_DEFLATED
+    )
+    rootlen = len(target_dir) + 1
+    for base, dirs, files in os.walk(target_dir):
+        for file in files:
+            fn = os.path.join(base, file)
+            zipobj.write(fn, fn[rootlen:])
+
 
 with MailBox(imap_server, port=imap_port).login_utf8(
     imap_username, imap_password
