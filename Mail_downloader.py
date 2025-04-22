@@ -5,6 +5,7 @@ import os
 import configparser
 import zipfile
 import shutil
+import time
 
 Path_config = "config.ini"
 config = configparser.ConfigParser()
@@ -18,6 +19,8 @@ imap_server = config["config"]["imap_server"]
 imap_username = config["config"]["imap_username"]
 imap_password = config["config"]["imap_password"]
 imap_port = config["config"]["imap_port"]
+ZIP_export_folder = config["config"]["zip_export_folder"]
+days_to_delete = int(config["config"]["days_to_delete"]) * 24 * 60 * 60
 list_Only_Folders = False
 date = datetime.datetime.now().strftime("%Y%m%d")
 MailBox_folder_list = ""
@@ -96,16 +99,14 @@ with MailBox(imap_server, port=imap_port).login_utf8(
                     continue
 
 
-def zipfolder(foldername, target_dir):
-    zipobj = zipfile.ZipFile(
-        f"{ZIP_export_folder}/{foldername}.zip", "w", zipfile.ZIP_DEFLATED
-    )
-    rootlen = len(target_dir) + 1
-    for base, dirs, files in os.walk(target_dir):
-        for file in files:
-            fn = os.path.join(base, file)
-            zipobj.write(fn, fn[rootlen:])
-
-
 zipfolder(f"{imap_server}_{date}", f"export/{imap_server}")
 shutil.rmtree(f"export/{imap_server}")
+
+for filename in os.listdir(ZIP_export_folder):
+    filepath = os.path.join(ZIP_export_folder, filename)
+
+    if os.path.isfile(filepath):
+        creation_time = os.path.getmtime(filepath)
+
+        if (now - creation_time) > days_to_delete:
+            os.remove(filepath)

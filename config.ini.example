@@ -4,3 +4,4 @@ imap_username=
 imap_password=
 imap_port=993
 zip_export_folder=export
+days_to_delete=30
