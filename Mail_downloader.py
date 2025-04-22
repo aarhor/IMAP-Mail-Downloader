@@ -26,6 +26,7 @@ date = datetime.datetime.now().strftime("%Y%m%d")
 MailBox_folder_list = ""
 now = time.time()
 
+
 def zipfolder(foldername, target_dir):
     zipobj = zipfile.ZipFile(
         f"{ZIP_export_folder}/{foldername}.zip", "w", zipfile.ZIP_DEFLATED
@@ -102,11 +103,12 @@ with MailBox(imap_server, port=imap_port).login_utf8(
 zipfolder(f"{imap_server}_{date}", f"export/{imap_server}")
 shutil.rmtree(f"export/{imap_server}")
 
-for filename in os.listdir(ZIP_export_folder):
-    filepath = os.path.join(ZIP_export_folder, filename)
+if days_to_delete == 0:
+    for filename in os.listdir(ZIP_export_folder):
+        filepath = os.path.join(ZIP_export_folder, filename)
 
-    if os.path.isfile(filepath):
-        creation_time = os.path.getmtime(filepath)
+        if os.path.isfile(filepath):
+            creation_time = os.path.getmtime(filepath)
 
-        if (now - creation_time) > days_to_delete:
-            os.remove(filepath)
+            if (now - creation_time) > days_to_delete:
+                os.remove(filepath)
