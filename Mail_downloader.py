@@ -85,6 +85,11 @@ with MailBox(imap_server, port=imap_port).login_utf8(
                         for char in invalid_char:
                             Mail_Subject = Mail_Subject.replace(char, "_")
 
+                        filename = f"{uid}_{Mail_Subject}"
+
+                        if len(filename) > 250:
+                            filename = f"{filename[:250]}.eml"
+
                         FilePath = f"export/{imap_server}/{Foldername}/{uid}_{Mail_Subject}.eml"
 
                         if not os.path.exists(FilePath):
