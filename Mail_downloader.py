@@ -25,9 +25,13 @@ list_Only_Folders = False
 date = datetime.datetime.now().strftime("%Y%m%d")
 MailBox_folder_list = ""
 now = time.time()
+errorcounter = 0
 
 
 def zipfolder(foldername, target_dir):
+    if errorcounter >= 1:
+        foldername = f"{foldername}_haserrors"
+    
     zipobj = zipfile.ZipFile(
         f"{ZIP_export_folder}/{foldername}.zip", "w", zipfile.ZIP_DEFLATED
     )
@@ -107,6 +111,7 @@ with MailBox(imap_server, port=imap_port).login_utf8(
                                 f"An exception occurred:\n{error}\n\nGoing to the next Iteration.\n"
                                 "--------------------------------------------------------"
                             )
+                    errorcounter += 1
                     continue
 
 
