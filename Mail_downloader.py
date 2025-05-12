@@ -99,9 +99,14 @@ with MailBox(imap_server, port=imap_port).login_utf8(
                                 with redirect_stdout(g):
                                     print(raw_email)
                 except Exception as error:
-                    print(
-                        f"An exception occurred:\n{error}\n\nGoing to the next Iteration."
-                    )
+                    with open(
+                        f"export/{imap_server}/Error.log", "a", encoding="utf-8"
+                    ) as g:
+                        with redirect_stdout(g):
+                            print(
+                                f"An exception occurred:\n{error}\n\nGoing to the next Iteration.\n"
+                                "--------------------------------------------------------"
+                            )
                     continue
 
 
