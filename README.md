@@ -1,6 +1,6 @@
 # IMAP Mail Downloader
 
-This python Script downlaods all Mails from a imap Mailbox and saves them in a Folder as a `.eml` File for using them otherwise. Like an external Backup.<br>
+This python Script downlaods all Mails from a imap Mailbox and saves them in a Folder as a `.zip` File for using them otherwise. Like an external Backup.<br>
 This Script is tested with `Python 3.13.2` and you need the `imap-tools` python Module (`pip install imap-tools`).
 
 ## Usage
@@ -11,7 +11,7 @@ Just copy / move the file `config.ini.example` to `config.ini` and fill in the n
   - Google: `imap.gmail.com`
   - Apple: `imap.mail.me.com`
   - Mailbox.org: `imap.mailbox.org`
-  - Proton: Needs the bridge
+  - Proton: Needs the bridge <= Not tested
 - `imap_username` is the mailaddress or the username (r_selfhosted@example.com)
 - `imap_password` can be a normal Password or an App Token.
 - `imap_port` Default Port value `993`
@@ -37,10 +37,12 @@ INBOX/Selfhosted/Paperless
 INBOX
 ```
 
-To exclude a folder from the Backup you just need to set the full folderpath in the `folders_to_exclude` list. When you excluded some folders, just set the Variable `list_Only_Folders` back to `False` and start the script with `py Mail_downloader.py`.
+### Configuration
 
-If you just want to Download a specific Folder and Subfolder, set `MailBox_folder_list` to the Foldername. For example: `MailBox_folder_list = "INBOX/Selfhosted"`.
-
-To set an another export folder for the zip File than the default `export`, just Update `ZIP_export_folder`. Default value: `zip_export_folder=export`
-
-If you want to automatically remove older zipped files, just update `days_to_delete` in the _config.ini_ file. A value of `0` disables the filedeletion. Default value: `days_to_delete=30`
+| Setting               | Description                                               | Location       | default                     |
+| --------------------- | --------------------------------------------------------- | -------------- | --------------------------- |
+| `folders_to_exclude`  | Exclude a folder from the Backup                          | Script line 17 | `folders_to_exclude = [""]` |
+| `list_Only_Folders`   | Display only folders and skips the export                 | Script line 24 | `False`                     |
+| `MailBox_folder_list` | Download a specific Folder and Subfolder                  | Script line 26 | empty                       |
+| `ZIP_export_folder`   | The folder for exported zip file.                         | config.ini     | `export`                    |
+| `days_to_delete`      | Removes files older than x days. Disabled with value `0`. | config.ini     | `30`                        |
