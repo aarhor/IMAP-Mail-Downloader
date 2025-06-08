@@ -11,7 +11,8 @@ Just copy / move the file `config.ini.example` to `config.ini` and fill in the n
   - Google: `imap.gmail.com`
   - Apple: `imap.mail.me.com`
   - Mailbox.org: `imap.mailbox.org`
-  - Proton: Needs the bridge <= Not tested
+  - Proton: Needs the bridge
+    ^ Successfully tested with an IMAP **SSL** Connection. The Script can be used as it is with an SSL Connection. But not usable with an STARTTLS Connection.
 - `imap_username` is the mailaddress or the username (r_selfhosted@example.com)
 - `imap_password` can be a normal Password or an App Token.
 - `imap_port` Default Port value `993`
