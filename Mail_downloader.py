@@ -2,12 +2,19 @@ from imap_tools import MailBox
 import datetime
 from contextlib import redirect_stdout
 import os
+import sys
 import configparser
 import zipfile
 import shutil
 import time
 
-Path_config = "config/config.ini"
+Path_config = ""
+if len(sys.argv) >= 2:
+    Arg_SingleDB = sys.argv[1]
+    Path_config =f"config/{Arg_SingleDB.replace("--config_file=", "")}"
+else:
+    Path_config = "config/config.ini"
+
 config = configparser.ConfigParser()
 config.sections()
 config.read(Path_config)
@@ -31,7 +38,7 @@ errorcounter = 0
 def zipfolder(foldername, target_dir):
     if errorcounter >= 1:
         foldername = f"{foldername}_haserrors"
-    
+
     zipobj = zipfile.ZipFile(
         f"{ZIP_export_folder}/{foldername}.zip", "w", zipfile.ZIP_DEFLATED
     )
