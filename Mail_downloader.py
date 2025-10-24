@@ -7,7 +7,7 @@ import zipfile
 import shutil
 import time
 
-Path_config = "config.ini"
+Path_config = "config/config.ini"
 config = configparser.ConfigParser()
 config.sections()
 config.read(Path_config)
