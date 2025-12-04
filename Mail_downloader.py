@@ -9,11 +9,13 @@ import shutil
 import time
 
 Path_config = ""
+script_path = os.path.dirname(__file__)
+
 if len(sys.argv) >= 2:
     Arg_SingleDB = sys.argv[1]
-    Path_config = f"config/{Arg_SingleDB.replace("--config_file=", "")}"
+    Path_config = f"{script_path}/config/{Arg_SingleDB.replace("--config_file=", "")}"
 else:
-    Path_config = "config/config.ini"
+    Path_config = f"{script_path}/config/config.ini"
 
 config = configparser.ConfigParser()
 config.sections()
