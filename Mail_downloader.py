@@ -17,7 +17,7 @@ if len(sys.argv) >= 2:
 else:
     Path_config = f"{script_path}/config/config.ini"
 
-config = configparser.ConfigParser()
+config = configparser.ConfigParser(interpolation=None)
 config.sections()
 config.read(Path_config)
 config.sections()
