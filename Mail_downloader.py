@@ -4,9 +4,10 @@ from contextlib import redirect_stdout
 import os
 import sys
 import configparser
-import zipfile
+import zlib
 import shutil
 import time
+import pyminizip
 
 Path_config = ""
 script_path = os.path.dirname(__file__)
@@ -28,6 +29,7 @@ imap_server = config["config"]["imap_server"]
 imap_username = config["config"]["imap_username"]
 imap_password = config["config"]["imap_password"]
 imap_port = config["config"]["imap_port"]
+encryption_password = config["config"]["encryption_password"]
 ZIP_export_folder = config["config"]["zip_export_folder"]
 days_to_delete = int(config["config"]["days_to_delete"]) * 24 * 60 * 60
 list_Only_Folders = False
@@ -36,19 +38,12 @@ MailBox_folder_list = ""
 now = time.time()
 errorcounter = 0
 
-
 def zipfolder(foldername, target_dir):
     if errorcounter >= 1:
         foldername = f"{foldername}_haserrors"
 
-    zipobj = zipfile.ZipFile(
-        f"{ZIP_export_folder}/{foldername}.zip", "w", zipfile.ZIP_DEFLATED
-    )
-    rootlen = len(target_dir) + 1
-    for base, dirs, files in os.walk(target_dir):
-        for file in files:
-            fn = os.path.join(base, file)
-            zipobj.write(fn, fn[rootlen:])
+    compression_level = 0  # 1-9
+    pyminizip.compress(f"export/{imap_server}/", None, f"{ZIP_export_folder}/{foldername}.zip", encryption_password, compression_level)
 
 
 with MailBox(imap_server, port=imap_port).login_utf8(
