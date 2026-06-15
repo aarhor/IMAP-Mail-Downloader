@@ -4,10 +4,9 @@ from contextlib import redirect_stdout
 import os
 import sys
 import configparser
-import zlib
 import shutil
 import time
-import pyminizip
+import pyzipper
 
 Path_config = ""
 script_path = os.path.dirname(__file__)
@@ -38,12 +37,28 @@ MailBox_folder_list = ""
 now = time.time()
 errorcounter = 0
 
-def zipfolder(foldername, target_dir):
+
+def zipfolder(foldername):
     if errorcounter >= 1:
         foldername = f"{foldername}_haserrors"
 
-    compression_level = 0  # 1-9
-    pyminizip.compress(f"export/{imap_server}/", None, f"{ZIP_export_folder}/{foldername}.zip", encryption_password, compression_level)
+    zip_path = f"{ZIP_export_folder}/{foldername}.zip"
+    source_path = f"export/{imap_server}/"
+
+    if not os.path.exists(source_path):
+        print(f"Hinweis: Ordner {source_path} existiert nicht.")
+        return
+
+    with pyzipper.AESZipFile(zip_path, "w", compression=pyzipper.ZIP_DEFLATED) as zf:
+        zf.setpassword(encryption_password.encode("utf-8"))  # Set Encryption password
+        zf.setencryption(pyzipper.WZ_AES)  # Set Encryption
+
+        for root, dirs, files in os.walk(source_path):
+            for file in files:
+                full_path = os.path.join(root, file)
+
+                rel_path = os.path.relpath(full_path, source_path)
+                zf.write(full_path, arcname=rel_path)
 
 
 with MailBox(imap_server, port=imap_port).login_utf8(
