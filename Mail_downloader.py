@@ -134,7 +134,7 @@ with MailBox(imap_server, port=imap_port).login_utf8(
                     continue
 
 if not list_Only_Folders:
-    zipfolder(f"{imap_server}_{date}", f"export/{imap_server}")
+    zipfolder(f"{imap_server}_{date}")
     shutil.rmtree(f"export/{imap_server}")
 
     if days_to_delete > 0:
