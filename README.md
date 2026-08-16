@@ -3,7 +3,10 @@
 **🦅🦅ENGLISH VERSION BELOW🦅🦅**
 
 Dieses python Skript lädt alle Mails von einem IMAP E-Mail Postfach herunter und speichert diese in einer `.zip` Datei. Die Datei kann dann z.B. für ein externes Backup genutzt werden.<br>
-Getestet wurde das Skript mit `Python 3.13.2`. Außerdem wird das python Modul `imap-tools` benötigt (`pip install imap-tools`).
+Getestet wurde das Skript mit `Python 3.13.2`. 
+Folgende Module werden zusätzlich bennötigt:
+* `imap-tools` => `pip install imap-tools`, `sudo apt install python3-imap-tools`
+* `pyzipper` => `pip install pyzipper`, `sudo apt install python3-pyzipper`
 
 ## Nutzung
 
@@ -15,9 +18,12 @@ Damit das Skript sich mit dem gewünschten IMAP Server verbinden kann, erstelle 
   - Mailbox.org: `imap.mailbox.org`
   - Proton: Benötigt [die bridge](https://proton.me/de/mail/bridge)<br>
     ^ Erfolgreich mit einer SSL Verbindung getestet. Das Skript kann, ohne weitere Einstellungen, mit einer SSL Verbindung genutzt werden. STARTTLS wird nicht unterstützt.
+  - ...
 - `imap_username` ist die Mailadresse oder der Benutzername (r_deEDV@example.com)
 - `imap_password` kann ein normales Passwort sein oder ein App Token.
 - `imap_port` Der Port. Standardmäßig `993`
+- `days_to_delete` Wie viele Tage an Backups behalten werden soll.
+- `encryption_password` Das Kennwort zum verschlüsseln des Exports. Es **muss** ein Kennwort angegeben werden.
 
 ### Erste Durchführung
 
@@ -79,9 +85,12 @@ Just copy / move the file `config.ini.example` (can be found in the folder `conf
   - Mailbox.org: `imap.mailbox.org`
   - Proton: Needs [the bridge](https://proton.me/de/mail/bridge)<br>
     ^ Successfully tested with an IMAP **SSL** Connection. The Script can be used as it is with an SSL Connection. But not usable with an STARTTLS Connection.
+  - ...
 - `imap_username` is the mailaddress or the username (r_selfhosted@example.com)
 - `imap_password` can be a normal Password or an App Token.
 - `imap_port` Default Port value `993`
+- `days_to_delete` For how long a backup should be kept.
+- `encryption_password` The password to encrypt the export. You **have to** set a password to use the script. 
 
 ### First run
 
