@@ -37,7 +37,6 @@ MailBox_folder_list = ""
 now = time.time()
 errorcounter = 0
 
-
 def zipfolder(foldername):
     if errorcounter >= 1:
         foldername = f"{foldername}_haserrors"
@@ -82,45 +81,62 @@ with MailBox(imap_server, port=imap_port).login_utf8(
                             print(Foldername)
 
                     MailBox.folder.set(Foldername)
+                    
+                    base_dir = os.path.abspath(f"export/{imap_server}/{Foldername}")
+                    max_filename_len = 259 - len(base_dir) - 10  # 10 = buffer für \, .eml, safety
+
                     for msg in MailBox.fetch(mark_seen=False):
-                        uid = msg.uid
-                        invalid_char = [
-                            ":",
-                            "“",
-                            "\r\n",
-                            "„",
-                            '"',
-                            "!",
-                            "?",
-                            "/",
-                            "\\",
-                            "*",
-                            "<",
-                            ">",
-                            "|",
-                            "ß",
-                            "\t",
-                            "\r",
-                            "\n",
-                        ]
+                        try:
 
-                        Mail_Subject = msg.subject
-                        for char in invalid_char:
-                            Mail_Subject = Mail_Subject.replace(char, "_")
+                            uid = msg.uid
+                            invalid_char = [
+                                ":",
+                                "“",
+                                "\r\n",
+                                "„",
+                                '"',
+                                "!",
+                                "?",
+                                "/",
+                                "\\",
+                                "*",
+                                "<",
+                                ">",
+                                "|",
+                                "ß",
+                                "\t",
+                                "\r",
+                                "\n",
+                            ]
 
-                        filename = f"{uid}_{Mail_Subject}"
+                            Mail_Subject = msg.subject
+                            for char in invalid_char:
+                                Mail_Subject = Mail_Subject.replace(char, "_")
 
-                        if len(filename) > 250:
-                            filename = f"{filename[:250]}"
+                            filename = f"{uid}_{Mail_Subject}"
 
-                        FilePath = f"export/{imap_server}/{Foldername}/{filename}.eml"
+                            if len(filename) > max_filename_len:
+                                filename = f"{filename[:max_filename_len]}"
 
-                        if not os.path.exists(FilePath):
-                            raw_email = msg.obj
-                            print(FilePath)
-                            with open(FilePath, "w", encoding="utf-8") as g:
+                            FilePath = f"export/{imap_server}/{Foldername}/{filename}.eml"
+
+                            if not os.path.exists(FilePath):
+                                raw_email = msg.obj
+                                print(FilePath)
+                                with open(FilePath, "w", encoding="utf-8") as g:
+                                    with redirect_stdout(g):
+                                        print(raw_email)
+
+                        except Exception as error:
+                            with open(f"export/{imap_server}/Error.log", "a", encoding="utf-8") as g:
                                 with redirect_stdout(g):
-                                    print(raw_email)
+                                    print(
+                                        f"Error at UID {uid} in Folder {Foldername}:\n {error}\n\nGoing to the next Iteration.\n"
+                                        "--------------------------------------------------------"
+                                    )
+                            errorcounter += 1
+                            continue
+
                 except Exception as error:
                     with open(
                         f"export/{imap_server}/Error.log", "a", encoding="utf-8"
